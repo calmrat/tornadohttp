@@ -41,7 +41,7 @@ class TornadoHTTP(object):
             'debug': True,
             'gzip': True,
             'host': '127.0.0.1',
-            'logdir': '',
+            'log_dir': '',
             'logstdout': True,
             'log2file': False,
             'logfile': 'tornado.log',
@@ -66,7 +66,7 @@ class TornadoHTTP(object):
         self.setup_logger()
 
     def _log_file_handler(self, logfile=None):
-        logdir = os.path.expanduser(self.config.get('logdir'))
+        logdir = os.path.expanduser(self.config.get('log_dir'))
         logfile = logfile or self.config.get('logfile')
         logfile = os.path.join(logdir, logfile)
         rotate = self.config.get('log_rotate')
@@ -164,9 +164,12 @@ class TornadoHTTP(object):
 
         if self.config.get('ssl'):
             ssl_options = dict(
-                certfile=os.path.expanduser(self.config.get('ssl_certificate')),
-                keyfile=os.path.expanduser(self.config.get('ssl_certificate_key')))
-            self.server = HTTPServer(self._web_app, ssl_options=ssl_options)
+                certfile=os.path.expanduser(
+                    self.config.get('ssl_certificate')),
+                keyfile=os.path.expanduser(
+                    self.config.get('ssl_certificate_key')))
+            self.server = HTTPServer(self._web_app,
+                                     ssl_options=ssl_options)
         else:
             self.server = HTTPServer(self._web_app)
 
