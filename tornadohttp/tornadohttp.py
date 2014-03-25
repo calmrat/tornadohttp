@@ -35,13 +35,13 @@ class TornadoHTTP(object):
 
     def __init__(self, **kwargs):
         config = {
-            'api_docs': '',
+            'api_docs': './api_docs/',
             'autoreload': False,
             'cookie_secret': '__SECRET_SHHHHHH__',
             'debug': True,
             'gzip': True,
             'host': '127.0.0.1',
-            'log_dir': '',
+            'log_dir': '/tmp/',
             'logstdout': True,
             'log2file': False,
             'logfile': 'tornado.log',
@@ -51,14 +51,14 @@ class TornadoHTTP(object):
             'log_requests_file': 'tornado_access.log',
             'log_requests_name': 'access',
             'login_url': '/login',
-            'pid_dir': '',
+            'pid_dir': '/tmp/',
             'pid_name': 'tornado',
             'port': 8080,
             'ssl': False,
             'ssl_certificate': '',
             'ssl_certificate_key': '',
-            'static_path': '',
-            'template_path': '',
+            'static_path': './static',
+            'template_path': './templates',
             'xsrf_cookies': False,
         }
         config.update(kwargs)

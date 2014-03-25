@@ -4,10 +4,14 @@
 
 from setuptools import setup
 
+VERSION_FILE = "tornadohttp/_version.py"
+VERSION_EXEC = ''.join(open(VERSION_FILE).readlines())
+__version__ = ''
+exec(VERSION_EXEC)  # update __version__
+if not __version__:
+    raise RuntimeError("Unable to find version string in %s." % VERSION_FILE)
+
 __pkg__ = 'tornadohttp'
-__version__ = '0.1.0'
-__release__ = "1a"
-__nvr__ = '%s-%s' % (__version__, __release__)
 __pkgs__ = ['tornadohttp']
 __provides__ = ['tornadohttp']
 __desc__ = 'Generic Tornado Server'
@@ -51,7 +55,7 @@ default_setup = dict(
     provides=__provides__,
     requires=__requires__,
     scripts=__scripts__,
-    version=__nvr__,
+    version=__version__,
 )
 
 setup(**default_setup)
