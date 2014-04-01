@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 # Author: "Chris Ward <cward@redhat.com>
 
@@ -11,6 +12,8 @@ Generic, re-usable Tornado server and config classes.
 Supports log handling, server startup / shutdown and
 configuration loading.
 '''
+
+from __future__ import unicode_literals
 
 import logging
 from functools import partial
@@ -41,10 +44,10 @@ class TornadoHTTP(object):
             'debug': True,
             'gzip': True,
             'host': '127.0.0.1',
-            'log_dir': '/tmp/',
-            'logstdout': True,
+            'log2stdout': True,
             'log2file': False,
-            'logfile': 'tornado.log',
+            'log_dir': '/tmp/',
+            'log_file': 'tornado.log',
             'log_keep': 3,
             'log_rotate': False,
             'log_rotate_bytes': 134217728,  # 128M 'maxBytes' before rotate
@@ -67,7 +70,7 @@ class TornadoHTTP(object):
 
     def _log_file_handler(self, logfile=None):
         logdir = os.path.expanduser(self.config.get('log_dir'))
-        logfile = logfile or self.config.get('logfile')
+        logfile = logfile or self.config.get('log_file')
         logfile = os.path.join(logdir, logfile)
         rotate = self.config.get('log_rotate')
         rotate_bytes = self.config.get('log_rotate_bytes')
@@ -104,14 +107,14 @@ class TornadoHTTP(object):
         The base logger name is the value of the class attribute `name`.
         '''
         level = self.config.get('debug')
-        logstdout = self.config.get('logstdout')
-        logfile = self.config.get('logfile')
+        log2stdout = self.config.get('log2stdout')
+        logfile = self.config.get('log_file')
         log_format = "%(name)s.%(process)s:%(asctime)s:%(message)s"
         log_format = logging.Formatter(log_format, "%Y%m%dT%H%M%S")
 
         logger = logging.getLogger()
         logger.handlers = []
-        if logstdout:
+        if log2stdout:
             hdlr = logging.StreamHandler()
             hdlr.setFormatter(log_format)
             logger.addHandler(hdlr)
