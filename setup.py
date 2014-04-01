@@ -3,8 +3,6 @@
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 # Author: "Chris Ward <cward@redhat.com>
 
-from __future__ import unicode_literals
-
 from setuptools import setup
 
 VERSION_FILE = "tornadohttp/_version.py"
