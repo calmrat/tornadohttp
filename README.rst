@@ -9,4 +9,12 @@ Generic Tornado Server
 Install
 ~~~~~~~
 
-pip install tornadohttp
+`pip install tornadohttp`
+
+or 
+
+`python setup.py install`
+
+or 
+
+`python setup.py develop`
