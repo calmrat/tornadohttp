@@ -42,9 +42,9 @@ class TornadoHTTP(object):
                  log_keep=3, log_rotate=False, log_rotate_bytes=134217728,
                  log_requests_file='tornado_access.log',
                  log_requests_name='access', login_url='/login',
-                 pid_dir='/tmp', pid_name='tornado', port=8080,
+                 pids_dir='/tmp', pid_name='tornado', port=8080,
                  ssl=False, ssl_certificate='', ssl_certificate_key='',
-                 static_path='static/', template_path='templates/',
+                 static_dir='static/', templates_dir='templates/www',
                  xsrf_cookies=False):
         self.config = dict(
             api_docs=api_docs,
@@ -64,14 +64,14 @@ class TornadoHTTP(object):
             log_requests_file=log_requests_file,
             log_requests_name=log_requests_name,
             login_url=login_url,
-            pid_dir=pid_dir,
+            pids_dir=pids_dir,
             pid_name=pid_name,
             port=port,
             ssl=ssl,
             ssl_certificate=ssl_certificate,
             ssl_certificate_key=ssl_certificate_key,
-            static_path=static_path,
-            template_path=template_path,
+            static_dir=static_dir,
+            templates_dir=templates_dir,
             xsrf_cookies=xsrf_cookies)
         self.setup_logger()
 
@@ -101,9 +101,11 @@ class TornadoHTTP(object):
 
     def _init_basic_server(self):
         logger.debug('======= %s =======' % self.name)
-        logger.debug(' Conf: %s' % self.config.get('config_file'))
-        logger.debug(' Host: %s' % self.uri)
-        logger.debug('  SSL: %s' % self.config.get('ssl'))
+        logger.debug(' Host       : %s' % self.uri)
+        logger.debug(' Config File: %s' % self.config.get('config_file'))
+        logger.debug(' SSL        : %s' % self.config.get('ssl'))
+        logger.debug(' Static     : %s' % self.config.get('static_dir'))
+        logger.debug(' Templates  : %s' % self.config.get('templates_dir'))
 
         host, port = self.config.get('host'), self.config.get('port')
         try:
@@ -149,12 +151,12 @@ class TornadoHTTP(object):
         self._web_app = Application(
             gzip=self.config.get('gzip'),
             debug=self.config.get('debug'),
-            static_path=self.config.get('static_path'),
+            static_path=self.config.get('static_dir'),
             handlers=self.handlers,
             cookie_secret=self.config.get('cookie_secret'),
             login_url=self.config.get('login_url'),
             xsrf_cookies=self.config.get('xsrf_cookies'),
-            template_path=self.config.get('template_path'),
+            template_path=self.config.get('templates_dir'),
         )
 
         if self.config.get('debug') and not self.config.get('autoreload'):
@@ -187,7 +189,7 @@ class TornadoHTTP(object):
     def pid_file(self):
         '''Return back the name of the current instance's pid file on disk'''
         pid_file = '%s.%s.pid' % (self.config.get('pid_name'), str(self.pid))
-        path = os.path.join(self.config.get('pid_dir'), pid_file)
+        path = os.path.join(self.config.get('pids_dir'), pid_file)
         return os.path.expanduser(path)
 
     def remove_pid(self, quiet=False):
